@@ -1,0 +1,83 @@
+%% Account Structure Diagram
+flowchart TD
+    %% Styling
+    classDef account fill:#59A14F,stroke:#3A6B33,color:white,stroke-width:2px,font-weight:bold
+    classDef pda fill:#F28E2B,stroke:#B66D1F,color:white,stroke-width:2px,font-weight:bold
+    classDef system fill:#E15759,stroke:#A73638,color:white,stroke-width:2px,font-weight:bold
+    classDef field fill:#f9f9f9,stroke:#ddd,stroke-width:1px
+    
+    %% User Accounts
+    subgraph UserAccounts[User Accounts]
+        direction TB
+        UA[User Wallet]
+        
+        subgraph TokenAccounts[Token Accounts]
+            TA1[Token Account 1]
+            TA2[Token Account 2]
+        end
+        
+        subgraph StakeAccounts[Stake Accounts]
+            SA1[Stake Account 1]
+            SA2[Stake Account 2]
+        end
+        
+        UA --> TokenAccounts
+        UA --> StakeAccounts
+    end
+    
+    %% PDAs
+    subgraph PDAs[Program Derived Addresses]
+        direction TB
+        
+        subgraph StakingPDA[Staking PDAs]
+            SPDA1[Staking PDA 1]
+            SPDA2[Staking PDA 2]
+        end
+        
+        subgraph GovernancePDA[Governance PDAs]
+            GPDA1[Proposal PDA]
+            GPDA2[Vote PDA]
+        end
+        
+        subgraph VaultPDA[Vault PDAs]
+            VPDA1[Token Vault]
+            VPDA2[Rewards Vault]
+        end
+    end
+    
+    %% System Accounts
+    subgraph System[System Accounts]
+        direction TB
+        
+        subgraph Programs[Core Programs]
+            SYS[System Program]
+            TOK[Token Program]
+            STAKE[Stake Program]
+        end
+        
+        subgraph Sysvars[Sysvars]
+            CLK[Clock]
+            EPOCH[Epoch Schedule]
+            RENT[Rent]
+        end
+    end
+    
+    %% Relationships
+    UserAccounts --> PDAs
+    PDAs --> System
+    
+    %% Account Details
+    classDef accountDetail fill:#f9f9f9,stroke:#ddd,stroke-width:1px,font-size:12px
+    
+    %% Styling
+    class UA,TA1,TA2,SA1,SA2 account
+    class SPDA1,SPDA2,GPDA1,GPDA2,VPDA1,VPDA2 pda
+    class SYS,TOK,STAKE,CLK,EPOCH,RENT system
+    
+    %% Legend
+    legend[Account Types]
+    legend -->|User Account| UA
+    legend -->|PDA| SPDA1
+    legend -->|System Program| SYS
+    
+    style legend fill:#f9f9f9,stroke:#ddd,stroke-width:1px

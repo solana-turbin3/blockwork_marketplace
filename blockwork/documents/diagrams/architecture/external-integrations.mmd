@@ -1,0 +1,71 @@
+%% External Integrations Diagram
+flowchart TD
+    %% Styling
+    classDef external fill:#B07AA1,stroke:#7D5772,color:white,stroke-width:2px,font-weight:bold
+    classDef oracle fill:#4E79A7,stroke:#2E4A6E,color:white,stroke-width:2px,font-weight:bold
+    classDef compliance fill:#E15759,stroke:#A73638,color:white,stroke-width:2px,font-weight:bold
+    classDef multisig fill:#F28E2B,stroke:#B66D1F,color:white,stroke-width:2px,font-weight:bold
+    classDef program fill:#59A14F,stroke:#3A6B33,color:white,stroke-width:2px,font-weight:bold
+    
+    %% Core Programs
+    subgraph Programs[Core Programs]
+        direction TB
+        TP[Token Program]
+        SP[Staking Program]
+        GP[Governance Program]
+    end
+    
+    %% Oracle Integration
+    subgraph Oracle[Price Oracle]
+        direction TB
+        O1[Price Feed API]
+        O2[Data Verification]
+        O3[On-chain Update]
+        
+        O1 -->|Fetch| O2
+        O2 -->|Verify| O3
+    end
+    
+    %% Compliance Service
+    subgraph Compliance[Compliance Service]
+        direction TB
+        C1[KYC/AML Check]
+        C2[Sanctions Screening]
+        C3[Risk Analysis]
+        
+        C1 --> C2
+        C2 --> C3
+    end
+    
+    %% Multi-sig Vault
+    subgraph MultiSig[Multi-sig Vault]
+        direction TB
+        M1[Propose Transaction]
+        M2[Approve (n/m)]
+        M3[Execute]
+        
+        M1 --> M2
+        M2 --> M3
+    end
+    
+    %% Integration Points
+    TP <-->|1. Price Data| Oracle
+    TP <-->|2. Compliance Check| Compliance
+    TP <-->|3. Multi-sig Control| MultiSig
+    
+    SP <-->|4. Oracle Data| Oracle
+    GP <-->|5. Multi-sig| MultiSig
+    
+    %% Styling
+    class TP,SP,GP program
+    class O1,O2,O3 oracle
+    class C1,C2,C3 compliance
+    class M1,M2,M3 multisig
+    
+    %% Legend
+    legend[Integration Points]
+    legend -->|1. Token Pricing| Oracle
+    legend -->|2. Regulatory Compliance| Compliance
+    legend -->|3. Secure Transfers| MultiSig
+    
+    style legend fill:#f9f9f9,stroke:#ddd,stroke-width:1px

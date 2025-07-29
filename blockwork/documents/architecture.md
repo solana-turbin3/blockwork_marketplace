@@ -1,130 +1,59 @@
 # Solana Protocol Architecture
 
+This document outlines the comprehensive architecture of the Solana protocol implementation, following the Solana Protocol Architecture guidelines. The architecture is broken down into three main components, each with its own detailed diagram.
+
+## 1. Program Structure
+
 ```mermaid
-graph TD
-    subgraph Programs[Program Structure]
-        TM[Token Manager] --> |Handle Transfers| T1
-        TM --> |Manage Supply| T2
-        SM[Staking Manager] --> |Process Stakes| S1
-        SM --> |Calculate Rewards| S2
-        GM[Governance Manager] --> |Process Votes| V1
-        GM --> |Execute Proposals| V2
-    end
-
-    subgraph Accounts[Account Structure]
-        UA[User Accounts]
-        PA[Program PDAs]
-        
-        subgraph UserAccounts
-            W[User Wallet]
-            SA[Staking Account]
-            TA[Token Account]
-        end
-        
-        subgraph ProgramPDAs
-            SPDA[Staking PDA]
-            RPDA[Rewards PDA]
-            TV[Token Vault]
-            SC[System Config]
-        end
-    end
-
-    subgraph External[Integrations]
-        PO[Price Oracle]
-        C[Compliance]
-        MS[Multi-sig Vault]
-    end
-
-    %% Connections
-    TM --> SM
-    SM --> GM
-    PA --> SPDA
-    PA --> RPDA
-    PA --> TV
-    PA --> SC
-    PO --> POService[Oracle Service]
-    C --> CService[Compliance Service]
-    MS --> MSVault[Multi-sig Vault]
-
-    %% Styling
-    classDef program fill:#0078D4,stroke:#005A9E,color:white
-    classDef account fill:#F3F2F1,stroke:#005A9E
-    classDef external fill:#005A9E,stroke:#005A9E,color:white
-    
-    class TM,SM,GM program
-    class W,SA,TA,SPDA,RPDA,TV,SC account
-    class PO,C,MS external
+%%{init: {'theme': 'base'}}%%
+{{ include: diagrams/architecture/program-structure.mmd }}
 ```
+
+### Key Components:
+- **Token Program**: Handles token transfers, minting, and balance management
+- **Staking Program**: Manages staking operations and reward calculations
+- **Governance Program**: Handles proposal creation, voting, and execution
+
+## 2. Account Structure
+
+```mermaid
+%%{init: {'theme': 'base'}}%%
+{{ include: diagrams/architecture/account-structure.mmd }}
+```
+
+### Account Types:
+- **User Accounts**: Owned by users, contain SOL and token balances
+- **Program Derived Addresses (PDAs)**: Stateless accounts managed by programs
+- **System Accounts**: Core Solana system accounts and programs
+
+## 3. External Integrations
+
+```mermaid
+%%{init: {'theme': 'base'}}%%
+{{ include: diagrams/architecture/external-integrations.mmd }}
+```
+
+### Integration Points:
+- **Price Oracle**: Provides real-time price feeds for assets
+- **Compliance Service**: Handles KYC/AML and regulatory requirements
+- **Multi-sig Vault**: Enables secure, multi-signature transactions
 
 ## Flow Components
 
-```mermaid
-graph TD
-    subgraph Flow[Flow Components]
-        direction TB
-        U[User]
-        D[Deposit]
-        S[Staking Program]
-        P[Process]
-        R[Calculate Rewards]
-        
-        U --> D
-        D --> S
-        S --> P
-        P --> R
-        
-        class U fill:#0078D4,stroke:#005A9E,color:white
-        class D,S,P,R fill:#F3F2F1,stroke:#005A9E
-    end
-```
+### Staking Flow
+1. User deposits tokens into staking account
+2. Staking program creates stake account
+3. Rewards accrue based on staking duration
+4. User can claim rewards or unstake tokens
 
-## Detailed Components
+### Governance Flow
+1. Token holders create proposals
+2. Voting period begins
+3. Votes are tallied on-chain
+4. Successful proposals are executed
 
-### Program Structure
-
-- Token Manager
-  - Handle Transfers
-  - Manage Supply
-
-- Staking Manager
-  - Process Stakes
-  - Calculate Rewards
-
-- Governance Manager
-  - Process Votes
-  - Execute Proposals
-
-### Account Structure
-
-- User Accounts
-  - User Wallet
-  - Staking Account
-  - Token Account
-
-- Program PDAs
-  - Staking PDA
-    - Owner: Staking Program
-    - Data: Stake Data
-  - Rewards PDA
-    - Owner: Staking Program
-    - Data: Reward Data
-  - Token Vault
-    - Owner: Token Program
-    - Data: Token Data
-  - System Config
-
-### External Integrations
-
-- Price Oracle
-  - Oracle Service
-  - Provides Prices
-  - Price Data
-
-- Compliance Service
-  - Verify Compliance
-  - Compliance Data
-
-- Multi-sig Vault
-  - Multi-sig
-  - Signatures
-  - Authorize
+## Security Considerations
+- All programs implement proper access control
+- Critical operations require proper authorization
+- External calls are validated and rate-limited
+- Comprehensive test coverage for all programs
