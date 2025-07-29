@@ -1,10 +1,57 @@
-# BlockWork
+# BlockWork Marketplace
 
-Welcome to BlockWork, a decentralized freelance marketplace built on Solana.
+A decentralized freelance marketplace built on Solana blockchain, providing secure escrow payments, transparent reputation, and innovative dispute resolution.
 
 ## Project Overview
 
 BlockWork is a next-generation freelance marketplace that leverages Solana's blockchain technology to provide secure, transparent, and efficient services for freelancers and clients. The platform focuses on instant, low-fee global payments, transparent on-chain reputation, and innovative dispute resolution mechanisms.
+
+## Project Structure
+
+```
+blockwork_marketplace/
+├── blockwork/         # Capstone project documentation
+│   └── documents/    # Core documentation files
+│       ├── blockwork-proposal.md
+│       ├── workproof.md
+│       └── architecture.md
+├── contracts/         # Solana smart contracts
+├── frontend/          # Web interface
+└── tests/            # Contract and frontend tests
+```
+
+## Core Components
+
+### Documentation
+- [BlockWork Proposal](blockwork/documents/blockwork-proposal.md)
+  - Business case and market analysis
+  - Value proposition and target markets
+  - Competitor analysis
+  - Founder-market fit
+
+- [WorkProof](blockwork/documents/workproof.md)
+  - User stories and requirements
+  - On-chain requirements
+  - User personas and flows
+  - Technical implementation details
+
+- [Architecture](blockwork/documents/architecture.md)
+  - Program structure
+  - Account structure
+  - External integrations
+  - Flow components
+
+### Smart Contracts
+- Escrow system for secure payments
+- Reputation and rating system
+- Job management system
+- Dispute resolution mechanism
+
+### Frontend
+- Job board and marketplace
+- Wallet integration
+- User profiles and reputation
+- Job application and submission system
 
 ## Core Features
 
@@ -15,35 +62,19 @@ BlockWork is a next-generation freelance marketplace that leverages Solana's blo
 - Integration with DAOs and vertical communities
 - Guided onboarding for non-crypto-natives
 
-## Project Structure
-
-```
-blockwork-marketplace/
-├── docs/              # Project documentation
-│   ├── blockwork-proposal/  # Business proposal and market analysis
-│   ├── workproof/        # User stories and requirements
-│   └── architecture/     # Technical architecture documentation
-├── contracts/          # Solana smart contracts
-├── frontend/           # Web interface
-├── tests/             # Contract and frontend tests
-└── diagrams/          # Architecture and flow diagrams
-```
-
 ## Getting Started
 
 ### Prerequisites
-
 - Solana CLI tools
 - Phantom or Solflare wallet
 - Node.js (for frontend development)
 - Rust (for smart contract development)
 
 ### Installation
-
 1. Clone the repository:
 ```bash
-git clone https://github.com/solana-turbin3/blockwork-marketplace.git
-cd blockwork-marketplace
+git clone https://github.com/solana-turbin3/blockwork_marketplace.git
+cd blockwork_marketplace
 ```
 
 2. Install dependencies:
@@ -57,7 +88,6 @@ npm install
 ```
 
 ### Development
-
 1. Start the Solana local cluster:
 ```bash
 solana-test-validator
@@ -76,15 +106,6 @@ cd frontend
 npm run dev
 ```
 
-## Documentation
-
-- [BlockWork Proposal](docs/blockwork-proposal/blockwork-proposal.md)
-- [WorkProof Requirements](docs/workproof/workproof.md)
-- [Architecture Documentation](docs/architecture/architecture.md)
-- [Client Workflow](docs/user_stories/client.md)
-- [Admin Workflow](docs/user_stories/admin.md)
-- [New User Onboarding](docs/user_stories/new_user.md)
-
 ## Security Considerations
 - Smart contract audits
 - Wallet security
@@ -93,6 +114,12 @@ npm run dev
 - Dispute resolution
 
 ## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 [Guidelines will be added]
 
 ## License
