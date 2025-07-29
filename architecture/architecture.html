@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solana Protocol Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .diagram {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 20px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Solana Protocol Architecture Diagram</h1>
+    
+    <div class="diagram">
+        <pre class="mermaid">
+graph TD
+    %% Style Definitions
+classDef program fill:#2196F3,stroke:#333,stroke-width:2px
+classDef pda fill:#FFC107,stroke:#333,stroke-width:2px
+classDef token fill:#4CAF50,stroke:#333,stroke-width:2px
+classDef external fill:#9C27B0,stroke:#333,stroke-width:2px
+classDef user fill:#FF9800,stroke:#333,stroke-width:2px
+classDef data fill:#E3F2FD,stroke:#333,stroke-width:1px
+
+    %% Core Programs
+    P1[Token Manager]:::program
+    P2[Staking Manager]:::program
+    P3[Governance Manager]:::program
+
+    %% Program Responsibilities
+    P1 -->|"Handle Transfers"| P1a[Transfer Handler]:::process
+    P2 -->|"Process Stakes"| P2a[Stake Handler]:::process
+    P3 -->|"Process Votes"| P3a[Voting Handler]:::process
+
+    %% Account Structure
+    A1[User Account]:::token
+    A2[Staking PDA]:::pda
+    A3[Token Vault]:::token
+
+    %% Account Relationships
+    A1 -->|"Owns"| A2
+    A2 -->|"Holds"| A3
+
+    %% External Services
+    O1[Price Oracle]:::external
+    C1[Compliance Service]:::external
+    M1[Multi-sig Vault]:::external
+
+    %% Program Interactions
+    P1 -->|CPI: Transfer| P2
+    P2 -->|CPI: Reward Distribution| P3
+    P3 -->|CPI: Token Distribution| P1
+
+    %% Data Flow
+    P2 -.->|"Stake Data"| A2
+    P3 -.->|"Governance Data"| P1
+
+    %% Legend
+    subgraph "Legend"
+        L1[Program]:::program
+        L2[PDA]:::pda
+        L3[Token]:::token
+        L4[External]:::external
+        L5[Data Flow]:::data
+    end
+        </pre>
+    </div>
+</body>
+</html>

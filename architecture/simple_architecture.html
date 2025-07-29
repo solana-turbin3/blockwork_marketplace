@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solana Architecture Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .diagram { margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Solana Protocol Architecture</h1>
+    <div class="diagram">
+        <pre class="mermaid">
+graph TD
+    %% Programs
+    P1[Token Manager]:::program
+    P2[Staking Manager]:::program
+    P3[Governance Manager]:::program
+
+    %% Account Structure
+    A1[User Account]:::token
+    A2[Staking PDA]:::pda
+    A3[Token Vault]:::token
+
+    %% External Services
+    O1[Price Oracle]:::external
+    C1[Compliance Service]:::external
+    M1[Multi-sig Vault]:::external
+
+    %% Program Interactions
+    P1 -->|CPI: Transfer| P2
+    P2 -->|CPI: Reward| P3
+    P3 -->|CPI: Token| P1
+
+    %% Account Relationships
+    A1 -->|"Owns"| A2
+    A2 -->|"Holds"| A3
+
+    %% External Integrations
+    P2 -->|"Price"| O1
+    P3 -->|"Check"| C1
+    P1 -->|"Vault"| M1
+
+    %% Style Definitions
+classDef program fill:#2196F3,stroke:#333,stroke-width:2px
+classDef pda fill:#FFC107,stroke:#333,stroke-width:2px
+classDef token fill:#4CAF50,stroke:#333,stroke-width:2px
+classDef external fill:#9C27B0,stroke:#333,stroke-width:2px
+        </pre>
+    </div>
+</body>
+</html>

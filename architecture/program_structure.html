@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Program Structure</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .diagram { margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Program Structure</h1>
+    <div class="diagram">
+        <pre class="mermaid">
+graph TD
+    %% Style Definitions
+classDef program fill:#2196F3,stroke:#333,stroke-width:2px
+classDef process fill:#E3F2FD,stroke:#333,stroke-width:1px
+
+    %% Core Programs
+    P1[Token Manager]:::program
+    P2[Staking Manager]:::program
+    P3[Governance Manager]:::program
+
+    %% Program Responsibilities
+    P1 -->|"Handle Transfers"| P1a[Transfer Handler]:::process
+    P1 -->|"Manage Supply"| P1b[Supply Manager]:::process
+    P2 -->|"Process Stakes"| P2a[Stake Handler]:::process
+    P2 -->|"Calculate Rewards"| P2b[Reward Calculator]:::process
+    P3 -->|"Process Votes"| P3a[Voting Handler]:::process
+    P3 -->|"Execute Proposals"| P3b[Proposal Executor]:::process
+
+    %% Program Interactions
+    P1 -->|"CPI: Transfer"| P2
+    P2 -->|"CPI: Reward Distribution"| P3
+    P3 -->|"CPI: Token Distribution"| P1
+
+    %% Legend
+    subgraph "Legend"
+        L1[Program]:::program
+        L2[Process]:::process
+        L3[CPI Call]
+    end
+        </pre>
+    </div>
+</body>
+</html>

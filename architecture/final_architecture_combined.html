@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solana Protocol Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { margin: 40px 0; page-break-after: always; }
+        .diagram { margin: 20px 0; }
+        h1 { text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Solana Protocol Architecture</h1>
+
+    <div class="section">
+        <h2>1. Program Structure</h2>
+        <pre class="mermaid">
+graph TD
+    %% Style Definitions
+classDef program fill:#2196F3,stroke:#333,stroke-width:2px
+classDef process fill:#E3F2FD,stroke:#333,stroke-width:1px
+
+    %% Core Programs
+    P1[Token Manager]:::program
+    P2[Staking Manager]:::program
+    P3[Governance Manager]:::program
+
+    %% Program Responsibilities
+    P1 -->|"Handle Transfers"| P1a[Transfer Handler]:::process
+    P1 -->|"Manage Supply"| P1b[Supply Manager]:::process
+    P2 -->|"Process Stakes"| P2a[Stake Handler]:::process
+    P2 -->|"Calculate Rewards"| P2b[Reward Calculator]:::process
+    P3 -->|"Process Votes"| P3a[Voting Handler]:::process
+    P3 -->|"Execute Proposals"| P3b[Proposal Executor]:::process
+
+    %% Program Interactions
+    P1 -->|"CPI: Transfer"| P2
+    P2 -->|"CPI: Reward Distribution"| P3
+    P3 -->|"CPI: Token Distribution"| P1
+
+    %% Legend
+    subgraph "Legend"
+        L1[Program]:::program
+        L2[Process]:::process
+        L3[CPI Call]
+    end
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2>2. Account Structure</h2>
+        <pre class="mermaid">
+graph TD
+    %% Style Definitions
+classDef token fill:#4CAF50,stroke:#333,stroke-width:2px
+classDef pda fill:#FFC107,stroke:#333,stroke-width:2px
+classDef data fill:#E3F2FD,stroke:#333,stroke-width:1px
+
+    %% User Accounts
+    subgraph "User Accounts"
+        U1[User Wallet]:::token
+        U2[Staking Account]:::token
+        U3[Token Account]:::token
+    end
+
+    %% Program PDAs
+    subgraph "Program PDAs"
+        P1[Staking PDA]:::pda
+        P1 -->|"Owner:"| SP[Staking Program]
+        P1 -->|"Data:"| P1_data[Stake Data]:::data
+
+        P2[Rewards PDA]:::pda
+        P2 -->|"Owner:"| SP
+        P2 -->|"Data:"| P2_data[Reward Data]:::data
+    end
+
+    %% Account Relationships
+    U1 -->|"Owns"| U2
+    U2 -->|"Holds"| P1
+    P1 -->|"Holds"| T1[Token Vault]:::token
+    T1 -->|"Managed by"| S1[System Config]:::token
+
+    %% Account Lifecycle
+    subgraph "Lifecycle"
+        L1[Created]:::process
+        L2[Active]:::process
+        L3[Locked]:::process
+        L4[Closed]:::process
+        L1 --> L2
+        L2 --> L3
+        L3 --> L4
+    end
+
+    %% Legend
+    subgraph "Legend"
+        L1[Token Account]:::token
+        L2[PDA]:::pda
+        L3[Data]:::data
+        L4[Process]:::process
+    end
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2>3. External Integrations</h2>
+        <pre class="mermaid">
+graph TD
+    %% Style Definitions
+classDef external fill:#9C27B0,stroke:#333,stroke-width:2px
+classDef program fill:#2196F3,stroke:#333,stroke-width:2px
+classDef data fill:#E3F2FD,stroke:#333,stroke-width:1px
+
+    %% External Services
+    subgraph "Price Oracle"
+        O1[Oracle Service]:::external
+        O1 -->|"Provide Prices"| P1[Price Data]:::data
+    end
+
+    subgraph "Compliance"
+        C1[Compliance Service]:::external
+        C1 -->|"Verify"| C2[Compliance Data]:::data
+    end
+
+    subgraph "Multi-sig"
+        M1[Multi-sig Vault]:::external
+        M1 -->|"Manage"| M2[Signatures]:::data
+    end
+
+    %% Integration Points
+    P1 -->|"Update"| P2[Program]:::program
+    C2 -->|"Validate"| P2
+    M2 -->|"Authorize"| P2
+
+    %% Legend
+    subgraph "Legend"
+        L1[Oracle]:::external
+        L2[Compliance]:::external
+        L3[Multi-sig]:::external
+        L4[Data]:::data
+        L5[Program]:::program
+    end
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2>4. Flow Components</h2>
+        <pre class="mermaid">
+graph TD
+    %% Style Definitions
+classDef process fill:#E3F2FD,stroke:#333,stroke-width:1px
+classDef decision fill:#FFEB3B,stroke:#333,stroke-width:2px
+
+    %% Main Flow
+    subgraph "Staking Process"
+        SP[Staking Program]:::process
+        SP -->|"User Deposits"| D1{Check User Status}:::decision
+
+        D1 -->|"New User"| P1[Create Account]:::process
+        D1 -->|"Existing User"| P2[Verify Account]:::process
+
+        P1 --> A1[User Account]:::process
+        P2 --> A1
+
+        A1 -->|"Deposit"| D2{Check Balance}:::decision
+        D2 -->|"Insufficient"| P3[Request More]:::process
+        D2 -->|"Sufficient"| P4[Create Stake]:::process
+
+        P4 --> P5[Create PDA]:::process
+        P5 --> PDA1[Staking PDA]:::process
+
+        PDA1 -->|"Calculate Rewards"| D3{Check Rewards}:::decision
+        D3 -->|"No Rewards"| P6[Wait Epoch]:::process
+        D3 -->|"Has Rewards"| P7[Claim Rewards]:::process
+    end
+
+    %% Error Handling
+    subgraph "Error Paths"
+        E1[Error]:::process
+        E2[Retry]:::process
+    end
+
+    %% Legend
+    subgraph "Legend"
+        L1[Process]:::process
+        L2[Decision]:::decision
+        L3[Error Path]
+    end
+        </pre>
+    </div>
+</body>
+</html>
