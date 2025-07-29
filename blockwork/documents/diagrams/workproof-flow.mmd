@@ -1,0 +1,101 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#0078D4', 'secondaryColor': '#005A9E', 'tertiaryColor': '#F3F2F1', 'lineColor': '#005A9E', 'fontFamily': 'Arial, sans-serif'}}}%%
+
+%% Freelancer Flow
+graph TD
+    subgraph Freelancer[Freelancer Actions]
+        A[Apply for Job]
+        W[Submit Work]
+        P[Receive Payment]
+        
+        A --> |"Submit Application"| W
+        W --> |"Work Accepted"| P
+    end
+
+    %% Client Flow
+    subgraph Client[Client Actions]
+        P[Post Job]
+        S[Select Freelancer]
+        F[Fund Contract]
+        R[Release Payment]
+        
+        P --> |"Job Created"| S
+        S --> |"Freelancer Selected"| F
+        F --> |"Work Completed"| R
+    end
+
+    %% Admin Flow
+    subgraph Admin[Admin Actions]
+        D[Review Disputes]
+        R[Resolve Issues]
+        M[Monitor Activity]
+        
+        D --> |"Dispute Found"| R
+        R --> |"Resolution Complete"| M
+    end
+
+    %% New User Flow
+    subgraph NewUser[New User Actions]
+        C[Connect Wallet]
+        H[Get Help]
+        
+        C --> |"Need Assistance"| H
+    end
+
+    %% Connections
+    P --> A
+    S --> A
+    W --> R
+    D --> F
+    
+    %% Styling
+    classDef user fill:#0078D4,stroke:#005A9E,color:white
+    classDef action fill:#F3F2F1,stroke:#005A9E
+    
+    class A,W,P,S,F,R,D,H user
+    class Freelancer,Client,Admin,NewUser action
+
+%% Job Lifecycle
+graph TD
+    subgraph JobLifecycle[Job Lifecycle]
+        J[Job Created]
+        A[Applications Open]
+        S[Selected Freelancer]
+        F[Funded]
+        W[Work Submitted]
+        C[Completed]
+        P[Paid]
+        
+        J --> A
+        A --> S
+        S --> F
+        F --> W
+        W --> C
+        C --> P
+        
+        class J,A,S,F,W,C,P fill:#F3F2F1,stroke:#005A9E
+    end
+
+    %% Status States
+    subgraph Status[Status States]
+        OS[Open]
+        PD[Pending]
+        IN[In Progress]
+        CP[Completed]
+        
+        OS --> PD
+        PD --> IN
+        IN --> CP
+        
+        class OS,PD,IN,CP fill:#0078D4,stroke:#005A9E,color:white
+    end
+
+    %% Connections
+    J --> OS
+    A --> PD
+    S --> PD
+    F --> IN
+    W --> IN
+    C --> CP
+    P --> CP
+
+    class JobLifecycle,Status fill:#F3F2F1,stroke:#005A9E
