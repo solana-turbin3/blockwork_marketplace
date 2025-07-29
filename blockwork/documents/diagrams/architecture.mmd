@@ -1,6 +1,5 @@
-# Solana Protocol Architecture
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#0078D4', 'secondaryColor': '#005A9E', 'tertiaryColor': '#F3F2F1', 'lineColor': '#005A9E', 'fontFamily': 'Arial, sans-serif'}}}%%
 
-```mermaid
 graph TD
     subgraph Programs[Program Structure]
         TM[Token Manager] --> |Handle Transfers| T1
@@ -54,12 +53,8 @@ graph TD
     class TM,SM,GM program
     class W,SA,TA,SPDA,RPDA,TV,SC account
     class PO,C,MS external
-```
 
-## Flow Components
-
-```mermaid
-graph TD
+    %% Flow Components
     subgraph Flow[Flow Components]
         direction TB
         U[User]
@@ -76,55 +71,3 @@ graph TD
         class U fill:#0078D4,stroke:#005A9E,color:white
         class D,S,P,R fill:#F3F2F1,stroke:#005A9E
     end
-```
-
-## Detailed Components
-
-### Program Structure
-
-- Token Manager
-  - Handle Transfers
-  - Manage Supply
-
-- Staking Manager
-  - Process Stakes
-  - Calculate Rewards
-
-- Governance Manager
-  - Process Votes
-  - Execute Proposals
-
-### Account Structure
-
-- User Accounts
-  - User Wallet
-  - Staking Account
-  - Token Account
-
-- Program PDAs
-  - Staking PDA
-    - Owner: Staking Program
-    - Data: Stake Data
-  - Rewards PDA
-    - Owner: Staking Program
-    - Data: Reward Data
-  - Token Vault
-    - Owner: Token Program
-    - Data: Token Data
-  - System Config
-
-### External Integrations
-
-- Price Oracle
-  - Oracle Service
-  - Provides Prices
-  - Price Data
-
-- Compliance Service
-  - Verify Compliance
-  - Compliance Data
-
-- Multi-sig Vault
-  - Multi-sig
-  - Signatures
-  - Authorize
